@@ -1,4 +1,4 @@
-export const BASE_URL="https://money-manager-1-qut4.onrender.com/api/v1.0";
+export const BASE_URL="https://money-manager-tmeb.onrender.com/api/v1.0";
 
 export const API_ENDPOINTS = {
     LOGIN: "/login",
