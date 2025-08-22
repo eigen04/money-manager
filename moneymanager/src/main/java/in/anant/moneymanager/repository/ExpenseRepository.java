@@ -1,6 +1,7 @@
 package in.anant.moneymanager.repository;
 
 import in.anant.moneymanager.entity.ExpenseEntity;
+import in.anant.moneymanager.entity.IncomeEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +26,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
             Long profileId, LocalDate startDate, LocalDate endDate
     );
     List<ExpenseEntity> findByProfileIdAndDate(Long profileId, LocalDate date)  ;
+
+    List<ExpenseEntity> findByProfile_Email(String email);
 }
 

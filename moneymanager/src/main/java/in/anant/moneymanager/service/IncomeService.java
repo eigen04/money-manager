@@ -1,13 +1,12 @@
 package in.anant.moneymanager.service;
 
-import in.anant.moneymanager.dto.ExpenseDto;
 import in.anant.moneymanager.dto.IncomeDto;
 import in.anant.moneymanager.entity.CategoryEntity;
-import in.anant.moneymanager.entity.ExpenseEntity;
 import in.anant.moneymanager.entity.IncomeEntity;
 import in.anant.moneymanager.entity.ProfileEntity;
 import in.anant.moneymanager.repository.CategoryRepository;
 import in.anant.moneymanager.repository.IncomeRepository;
+import org.springframework.security.access.AccessDeniedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -43,11 +42,15 @@ public class IncomeService {
         ProfileEntity profile = profileService.getCurrentProfile();
         IncomeEntity incomeEntity = incomeRepository.findById(incomeId)
                 .orElseThrow(() -> new RuntimeException("Income not found or Not Accessible"));
-        if(incomeEntity.getProfile().getId().equals(profile.getId())){
-            throw new  RuntimeException("Unauthorized access to delete this income");
+
+        // Only allow delete if current user is owner
+        if (!incomeEntity.getProfile().getId().equals(profile.getId())) {
+            throw new AccessDeniedException("Unauthorized access to delete this income");
         }
+
         incomeRepository.delete(incomeEntity);
     }
+
     public List<IncomeDto> getLatest5IncomesForCurrentUser() {
         ProfileEntity profile = profileService.getCurrentProfile();
         List<IncomeEntity> list = incomeRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());

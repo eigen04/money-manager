@@ -41,8 +41,9 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", e.getMessage()));
         }
     }
-    @GetMapping("/test")
-    public String test(){
-        return "Test successful";
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDto> getPublicProfile() {
+        ProfileDto profileDto = profileService.getPublicProfile(null);
+        return ResponseEntity.ok(profileDto);
     }
 }

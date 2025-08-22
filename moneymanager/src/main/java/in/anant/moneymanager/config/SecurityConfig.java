@@ -36,6 +36,8 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/status","/health","/register","/activate","/login").permitAll()
+                    .requestMatchers("/excel/download/**","/email/income-excel","/email/expense-excel").permitAll()
+                    .requestMatchers("/filter/**").authenticated()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
